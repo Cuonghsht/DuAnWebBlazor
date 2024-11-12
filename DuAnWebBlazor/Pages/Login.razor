@@ -1,0 +1,81 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager NavigationManager
+@inject HttpClient cli
+@using DuAnWebData
+@using Newtonsoft.Json;
+@using DuAnWebData.Model;
+
+<!DOCTYPE html>
+<html lang="en">
+<link href="css/Login.css" rel="stylesheet">
+
+<body>
+    @if (!string.IsNullOrEmpty(Mess))
+    {
+        <h1 style="color: white;" class="notification">@Mess</h1> <!-- Hiển thị thông báo -->
+    }
+    <div class="container">
+        <div class="left">
+            <h2>LogIn</h2>
+            <input @bind="AccounName" type="text" placeholder="Username">
+            <input @bind="AccountPass" type="password" placeholder="Password">
+            <button @onclick="DangNhap" class="login-btn">LogIn</button>
+        </div>
+        <div class="right">
+            <h1>Wellcome to my project </h1>
+            <p> Meme blabla  <br> real credentials</p>
+        </div>
+    </div>
+</body>
+</html>
+
+@code {
+    string AccounName;
+    string AccountPass;
+    string Mess = "";
+    private async Task DangNhap()
+    {
+
+        if (string.IsNullOrEmpty(AccounName) || string.IsNullOrEmpty(AccountPass))
+        {
+            Mess = "Tên đăng nhập và mật khẩu không được để trống.";
+            StateHasChanged();
+            return;
+        }
+        try
+        {
+
+            string RequetsURL = $@"https://localhost:7185/api/Loginn/Login?accountName={AccounName}&passWord={AccountPass}";
+
+            var re = await cli.GetStringAsync(RequetsURL);
+            if (re==null)
+            {
+
+            }
+            else {
+                var role = JsonConvert.DeserializeObject<Accounts>(re);
+                int id = role.RoleId;
+                if (id == 1)
+                {
+                    NavigationManager.NavigateTo("/Admin");
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/User");
+
+                }
+            }
+
+
+
+
+        }
+        catch (Exception e)
+        {
+            Mess = "Thông tin đăng nhập không hợp lệ";
+        }
+
+        StateHasChanged();
+    }
+}

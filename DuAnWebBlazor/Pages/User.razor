@@ -1,0 +1,85 @@
+﻿@page "/User"
+@inject HttpClient cli;
+@using Newtonsoft.Json;
+@using DuAnWebData.Model;
+
+<h3>User</h3>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoSELL Template Library</title>
+    <link rel="stylesheet" href="css/User.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>GoSELL</h1>
+    </div>
+    <div class="sidebar">
+        <ul>
+            <li>Trang Chủ</li>
+            <li>GoChat</li>
+            <li>Sản Phẩm</li>
+            <li>Dịch Vụ</li>
+            <li>Đơn Hàng</li>
+            <li>Đặt Chỗ</li>
+            <li>Ưu Đãi</li>
+            <li>Khách Hàng</li>
+            <li>Tổng Đài</li>
+            <li>Sổ Quỹ</li>
+            <li>Phân Tích</li>
+            <li>Tiếp Thị</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h2>Kho Giao Diện</h2>
+        <div class="template-category">
+            @if (listproduct == null)
+            {
+                <p>Loading...</p>
+            }
+            else if (listproduct.Count == 0)
+            {
+                <p>No products found.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var product in listproduct)
+                    {
+                        <li class="product-item">
+                            <h4>@product.NameProduct</h4>
+                            @if (!string.IsNullOrEmpty(product.Image))
+                            {
+                                <img src="@product.Image" alt="@product.NameProduct" class="product-image" />
+                            }
+                            <p>@product.DescriptionProduct</p>
+                            <p>Giá: @product.PriceProduct VND</p>
+                            <button class="btn add-to-cart">Thêm vào giỏ hàng</button>
+                            <button class="btn view-details">Chi tiết</button>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+@code {
+    List<Product> listproduct = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllProduct();
+    }
+
+    public async Task GetAllProduct()
+    {
+        var getall = "https://localhost:7185/api/Products";
+        var re = await cli.GetStringAsync(getall);
+        listproduct = JsonConvert.DeserializeObject<List<Product>>(re);
+    }
+}
