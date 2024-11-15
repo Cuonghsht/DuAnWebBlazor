@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DuAnWebData.Model
@@ -13,8 +14,16 @@ namespace DuAnWebData.Model
         public Guid IdUser { get; set; }
         public int IdPay { get; set; }
         public decimal ToTal { get; set; }
-        public ICollection<BillDetail>? BillDetails { get; set; } = new List<BillDetail>();
-        public User? User { get; set; } = new User();
-        public Pay? Pay { get; set; } = new Pay();
+        [JsonIgnore]
+        public ICollection<BillDetail>? BillDetails { get; set; }
+        [JsonIgnore]
+        public User? User { get; set; }
+        [JsonIgnore]
+        public Pay? Pay { get; set; } 
+        public Bill()
+        {
+            BillDetails = new List<BillDetail>();
+            
+        }
     }
 }

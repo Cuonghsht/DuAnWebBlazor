@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DuAnWebData.Data;
 using DuAnWebData.Model;
+using DuAnWebData.Fake;
 
 namespace DuAnWebAPI.Controllers
 {
@@ -20,16 +21,13 @@ namespace DuAnWebAPI.Controllers
         {
             _context = context;
         }
-
+        
         // GET: api/Accounts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Accounts>>> GetAccountss()
+        public  IActionResult GetAccount()
         {
-          if (_context.Accountss == null)
-          {
-              return NotFound();
-          }
-            return await _context.Accountss.ToListAsync();
+            var data =  _context.Accountss.ToList();
+            return Ok(data);
         }
 
         // GET: api/Accounts/5
@@ -96,6 +94,19 @@ namespace DuAnWebAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAccounts", new { id = accounts.AccountId }, accounts);
+        }
+        [HttpPost("AddAccount")]
+        public async Task<ActionResult<Accounts>> Add([FromBody] Accountfake aa)
+        {
+            Accounts accounts = new Accounts()
+            {
+                AccountName = aa.AccountName,
+                AccountPass = aa.AccountPass,
+                RoleId = aa.RoleId
+            };
+            _context.Accountss.Add(accounts);
+            await _context.SaveChangesAsync();
+            return Ok("Thanh cong");
         }
 
         // DELETE: api/Accounts/5

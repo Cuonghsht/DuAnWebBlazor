@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DuAnWebData.Model
@@ -16,7 +17,14 @@ namespace DuAnWebData.Model
         public string DescriptionProduct { get; set; }
         public bool Status { get; set; } = false;
         public string Image { get; set; }
-        public ICollection<CartDetail>? CartDetail { get; set; }  = new List<CartDetail>();
-        public ICollection<BillDetail>? BillDetais { get; set; }  = new HashSet<BillDetail>();
+        [JsonIgnore]
+        public ICollection<CartDetail>? CartDetail { get; set; }
+        [JsonIgnore]
+        public ICollection<BillDetail>? BillDetais { get; set; }  
+        public Product()
+        {
+            CartDetail = new List<CartDetail>();
+            BillDetais = new List<BillDetail>();
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DuAnWebData.Model
@@ -10,6 +11,11 @@ namespace DuAnWebData.Model
     {
         public int IdPay { get; set; }
         public string NamePay { get; set; }
-        public ICollection<Bill>? Bills { get; set; } =  new List<Bill>();
+        [JsonIgnore]
+        public ICollection<Bill>? Bills { get; set; } 
+        public Pay()
+        {
+            Bills = new List<Bill>();
+        }
     }
 }

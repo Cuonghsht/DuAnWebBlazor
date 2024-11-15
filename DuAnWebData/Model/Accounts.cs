@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DuAnWebData.Model
@@ -13,7 +14,13 @@ namespace DuAnWebData.Model
         public string AccountName { get; set; }
         public string AccountPass { get; set; }
         public int RoleId { get; set; }
-        public Role? role { get; set; }  = new Role();
-        public User? user { get; set; } = new User();
+        [JsonIgnore]
+        public Role? role { get; set; }
+        [JsonIgnore]
+        public User? user { get; set; } 
+        public Accounts()
+        {
+            
+        }
     }
 }

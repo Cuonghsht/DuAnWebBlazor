@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DuAnWebData.Model
@@ -16,8 +17,15 @@ namespace DuAnWebData.Model
         public DateTime DateTime { get; set; }
         public string Address { get; set; }
         public string AccountName { get; set; }
-        public Accounts? Accounts { get; set; }  = new Accounts();
-        public Cart? Cart { get; set; } = new Cart();
-        public ICollection<Bill>? bills { get; set; } = new List<Bill>();
+        [JsonIgnore]
+        public Accounts? Accounts { get; set; }
+        [JsonIgnore]
+        public Cart? Cart { get; set; }
+        [JsonIgnore]
+        public ICollection<Bill>? bills { get; set; } 
+        public User()
+        {
+            bills = new List<Bill>();
+        }
     }
 }

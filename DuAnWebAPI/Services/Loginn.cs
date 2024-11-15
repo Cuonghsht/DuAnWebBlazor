@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DuAnWebAPI.Controllers
+namespace DuAnWebAPI.Services
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,11 +14,10 @@ namespace DuAnWebAPI.Controllers
             _data = data;
         }
         [HttpGet("Login")]
-        public IActionResult Login(string accountName , string passWord)
+        public IActionResult Login(string accountName, string passWord)
 
         {
-            
-            var dangNhap = _data.Accountss .FirstOrDefault(x=>x.AccountName==accountName);
+            var dangNhap = _data.Accountss.FirstOrDefault(x => x.AccountName == accountName);
             if (dangNhap == null)
             {
                 return BadRequest("Thông tin đăng nhập không hợp lệ ");
@@ -29,8 +28,7 @@ namespace DuAnWebAPI.Controllers
             }
             else
             {
-               
-                return Ok( dangNhap );
+                return Ok(dangNhap);
             }
         }
     }
