@@ -15,7 +15,6 @@ namespace DuAnWebAPI.Services
         {
             this.dataContext = data;
         }
-
         [HttpPost("DangKi")]
         public IActionResult Create([FromBody] CreateAccountUserCart cc)
         {
@@ -26,7 +25,7 @@ namespace DuAnWebAPI.Services
                     AccountId = Guid.NewGuid(),
                     AccountName = cc.acc.AccountName,
                     AccountPass = cc.acc.AccountPass,
-                    RoleId = cc.acc.RoleId
+                    RoleId = 2
                 };
                 dataContext.Accountss.Add(ac);
 
@@ -36,10 +35,10 @@ namespace DuAnWebAPI.Services
                     AccountName = cc.acc.AccountName,
                     UserName = cc.us.UserName,
                     Sex = cc.us.Sex,
-                    PhoneNumber = cc.us.PhoneNumber ?? "DefaultPhoneNumber",
-                    Email = cc.us.Email ?? "default@example.com",
+                    PhoneNumber = cc.us.PhoneNumber,
+                    Email = cc.us.Email ,
                     UserId = iduser,
-                    Address = cc.us.Address ?? "DefaultAddress",
+                    Address = cc.us.Address,
                     DateTime = DateTime.Now
                 };
                 dataContext.Users.Add(user);

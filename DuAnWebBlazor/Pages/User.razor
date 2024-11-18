@@ -46,7 +46,7 @@
             }
             else
             {
-                <ul>
+                <ul class="product-list">
                     @foreach (var product in listproduct)
                     {
                         <li class="product-item">
@@ -78,7 +78,6 @@
 
     public async Task GetAllProduct()
     {
-        
         var getall = "https://localhost:7185/api/Products";
         var re = await cli.GetStringAsync(getall);
         listproduct = JsonConvert.DeserializeObject<List<Product>>(re);

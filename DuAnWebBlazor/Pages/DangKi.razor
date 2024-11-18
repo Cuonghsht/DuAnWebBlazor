@@ -1,0 +1,98 @@
+﻿@page "/DangKi"
+@inject HttpClient cli;
+@using Newtonsoft.Json;
+@using DuAnWebData.Fake;
+@using DuAnWebData.Model;
+@using System.Text
+@inject NavigationManager NavigationManager;
+
+<h3>Đăng Ký Tài Khoản</h3>
+<link href="css/DangKiTaiKhaon.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="left-section">
+        <h2>Đăng Ký</h2>
+        
+         <form @onsubmit="HandleCreateAsync">
+            <label for="username">Tên đăng nhập</label>
+            <input type="text" @bind="newuser.acc.AccountName" id="username" name="username" required><br>
+
+            <label for="email">Email</label><br>
+            <input type="email" @bind="newuser.us.Email" id="email" name="email" required><br>
+
+            <label for="SDT">Số điện thoại</label><br>
+            <input type="text" @bind="newuser.us.PhoneNumber" id="SDT" name="SDT" required><br>
+
+            <label for="password">Mật khẩu</label>
+            <input type="password" @bind="newuser.acc.AccountPass" id="password" name="password" required><br>
+
+            <label for="ten">Tên người dùng</label>
+            <input type="text" @bind="newuser.us.UserName" id="ten" name="ten" required><br>
+
+            <label for="Add">Địa chỉ</label>
+            <input type="text" @bind="newuser.us.Address" id="Add" name="Add" required><br>
+
+            <select id="select1" @bind="newuser.us.Sex">
+                <option value="true">Nam</option>
+                <option value="false">Nữ</option>
+            </select><br>
+
+            <label for="confirm-password">Xác nhận mật khẩu</label>
+            <input type="password" id="confirm-password" name="confirm-password" required><br>
+
+            <label for="MaXn">Mã xác nhận </label>
+            <input type="text" @bind="MaXacNhan" id="MaXn" name="MaXn" required><br>
+            <button type="submit">Mã xác nhận </button>
+            <button type="submit">Đăng Ký</button>
+            </form>
+        
+    </div>
+    <div class="right-section">
+        <h2>Chào Mừng đến với dự án của tôi</h2>
+        <p>Hãy đăng ký để có trải nghiệm tốt nhất.</p>
+        <a href="/login">Đăng nhập nếu bạn đã có tài khoản</a>
+    </div>
+</div>
+
+@code {
+    int MaXacNhan; 
+
+    private readonly CreateAccountUserCart newuser = new CreateAccountUserCart()
+        {
+            acc = new Accountfake(),
+            us = new UserFake(),
+            car = new CartFake()
+        };
+    private async Task HandleCreateAsync()
+    { // Gán giá trị cho AccountName của đối tượng us từ acc 
+        newuser.us.AccountName = newuser.acc.AccountName; await Create();
+    }
+
+
+    public async Task Create()
+    {
+        try
+        {
+            newuser.us.AccountName = newuser.acc.AccountName;
+            string APIS = "https://localhost:7185/api/CreateAccounts/DangKi";
+            // var json = JsonConvert.SerializeObject(newuser);
+            // var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var request = await cli.PostAsJsonAsync(APIS,newuser);
+            if (request.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("/Login");
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/User");
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Lỗi: {ex.Message}");
+        }
+    }
+}

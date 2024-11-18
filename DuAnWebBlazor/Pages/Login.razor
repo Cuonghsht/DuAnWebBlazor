@@ -25,12 +25,17 @@
         <div class="right">
             <h1>Wellcome to my project </h1>
             <p> Meme blabla  <br> real credentials</p>
+            <a href="DangKi" @onclick="DangKy"> Đăng kí tài khoản </a>
         </div>
     </div>
 </body>
 </html>
 
 @code {
+    private  void DangKy()
+    {
+        NavigationManager.NavigateTo("/DangKi");
+    }
     string AccounName;
     string AccountPass;
     string Mess = "";
