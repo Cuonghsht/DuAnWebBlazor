@@ -3,6 +3,8 @@ using DuAnWebData.Fake;
 using DuAnWebData.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace DuAnWebAPI.Services
 {
@@ -60,5 +62,6 @@ namespace DuAnWebAPI.Services
                 return BadRequest(ex);
             }
         }
+        
     }
 }
