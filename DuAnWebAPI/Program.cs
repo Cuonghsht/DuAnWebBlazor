@@ -1,4 +1,4 @@
-﻿using DuAnWebAPI.Services;
+﻿using DuAnWebAPI.Services.OtpEmail;
 using DuAnWebData.Data;
 using DuAnWebData.Model;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<Iemail, EmailService>();
+builder.Services.AddScoped<DuAnWebData.Model.Iemail, EmailService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddCors(options =>

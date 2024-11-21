@@ -1,4 +1,4 @@
-﻿namespace DuAnWebAPI.Services
+﻿namespace DuAnWebAPI.Services.OtpEmail
 {
     public interface Iemail
     {

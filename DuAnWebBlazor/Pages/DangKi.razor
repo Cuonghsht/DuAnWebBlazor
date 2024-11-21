@@ -5,15 +5,14 @@
 @using DuAnWebData.Model;
 @using System.Text
 @inject NavigationManager NavigationManager;
-
+@using System.Text.Json;
+@using DuAnWebAPI.Services.OtpEmail;
 <h3>Đăng Ký Tài Khoản</h3>
 <link href="css/DangKiTaiKhaon.css" rel="stylesheet" />
-
 <div class="container">
     <div class="left-section">
         <h2>Đăng Ký</h2>
-        
-         <form @onsubmit="HandleCreateAsync">
+        <form @onsubmit="HandleCreateAsync">
             <label for="username">Tên đăng nhập</label>
             <input type="text" @bind="newuser.acc.AccountName" id="username" name="username" required><br>
 
@@ -41,11 +40,10 @@
             <input type="password" id="confirm-password" name="confirm-password" required><br>
 
             <label for="MaXn">Mã xác nhận </label>
-            <input type="text" @bind="MaXacNhan" id="MaXn" name="MaXn" required><br>
-            <button type="submit">Mã xác nhận </button>
+            <input type="text" @bind="Maxac" id="MaXn" name="MaXn" required><br>
+            <button @onclick="SendOTP" type="button">Mã xác nhận </button>
             <button type="submit">Đăng Ký</button>
-            </form>
-        
+        </form>
     </div>
     <div class="right-section">
         <h2>Chào Mừng đến với dự án của tôi</h2>
@@ -55,7 +53,12 @@
 </div>
 
 @code {
-    int MaXacNhan; 
+    string MaXacNhan;
+    string Mess;
+    string Maxac;
+    private HttpResponseMessage? uu;
+
+   
 
     private readonly CreateAccountUserCart newuser = new CreateAccountUserCart()
         {
@@ -64,31 +67,55 @@
             car = new CartFake()
         };
     private async Task HandleCreateAsync()
-    { // Gán giá trị cho AccountName của đối tượng us từ acc 
+    {
         newuser.us.AccountName = newuser.acc.AccountName; await Create();
     }
+    public async Task SendOTP()
+    {
+        string mail = newuser.us.Email;
 
-
+        if (!string.IsNullOrEmpty(mail))
+        {
+            string URL = $@"https://localhost:7185/api/mama/send-code?email={mail}";
+            var uu = await cli.PostAsync(URL, null);
+            if (uu.IsSuccessStatusCode)
+            {
+                var id = await uu.Content.ReadAsStringAsync();
+                var ee = JsonConvert.DeserializeObject<OTP>(id);
+                MaXacNhan = ee.codes;
+            }
+            else
+            {
+                Console.WriteLine("That bai");
+            }
+        }
+        else
+        {
+            Mess = " Bạn cần nhập đầy đủ thông tin ";
+        }
+    }
     public async Task Create()
     {
         try
         {
             newuser.us.AccountName = newuser.acc.AccountName;
-            string APIS = "https://localhost:7185/api/CreateAccounts/DangKi";
-            // var json = JsonConvert.SerializeObject(newuser);
-            // var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var request = await cli.PostAsJsonAsync(APIS,newuser);
-            if (request.IsSuccessStatusCode)
+            if(MaXacNhan == Maxac)
             {
-                NavigationManager.NavigateTo("/Login");
+                string APIS = "https://localhost:7185/api/CreateAccounts/DangKi";
+                var request = await cli.PostAsJsonAsync(APIS, newuser);
+                if (request.IsSuccessStatusCode)
+                {
+                    NavigationManager.NavigateTo("/Login");
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/User");
+                }
             }
             else
             {
-                NavigationManager.NavigateTo("/User");
-
+                NavigationManager.NavigateTo("/Admin");
             }
-
         }
         catch (Exception ex)
         {

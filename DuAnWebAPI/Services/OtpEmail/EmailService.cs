@@ -4,9 +4,9 @@ using MimeKit;
 using MimeKit.Text;
 using Microsoft.Extensions.Options;
 using DuAnWebData.Model;
-using DuAnWebAPI.Services;
+using DuAnWebAPI.Services.OtpEmail;
 
-public class EmailService : Iemail 
+public class EmailService : DuAnWebData.Model.Iemail 
 {
     private readonly EmailSettings _emailSettings;
 
