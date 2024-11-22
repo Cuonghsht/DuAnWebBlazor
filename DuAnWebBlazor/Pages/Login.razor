@@ -61,12 +61,14 @@
             else {
                 var role = JsonConvert.DeserializeObject<Accounts>(re);
                 int id = role.RoleId;
+                string nameaccount = role.AccountName;
                 if (id == 1)
                 {
                     NavigationManager.NavigateTo("/Admin");
                 }
                 else
                 {
+                    
                     NavigationManager.NavigateTo("/User");
 
                 }

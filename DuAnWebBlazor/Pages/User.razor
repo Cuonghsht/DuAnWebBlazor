@@ -1,5 +1,6 @@
 ﻿@page "/User"
 @inject HttpClient cli;
+@inject NavigationManager na ; 
 @using Newtonsoft.Json;
 @using DuAnWebData.Model;
 
@@ -19,7 +20,7 @@
     </div>
     <div class="sidebar">
         <ul>
-            <li>Trang Chủ</li>
+            <li @onclick="TrangChu">Trang Chủ</li>
             <li>GoChat</li>
             <li>Sản Phẩm</li>
             <li>Dịch Vụ</li>
@@ -29,8 +30,8 @@
             <li>Khách Hàng</li>
             <li>Tổng Đài</li>
             <li>Sổ Quỹ</li>
-            <li>Phân Tích</li>
-            <li>Tiếp Thị</li>
+            <li @onclick="ThongtinCaNhan" >Thông tin tài khoản </li>
+            <li @onclick="DangXuat">Log out</li>
         </ul>
     </div>
     <div class="main-content">
@@ -76,10 +77,22 @@
         await GetAllProduct();
     }
 
+    public async Task ThongtinCaNhan()
+    {
+        
+    }
     public async Task GetAllProduct()
     {
         var getall = "https://localhost:7185/api/Products";
         var re = await cli.GetStringAsync(getall);
         listproduct = JsonConvert.DeserializeObject<List<Product>>(re);
+    }
+    public async Task DangXuat()
+    {
+        na.NavigateTo("/Login");
+    }
+    public async Task TrangChu()
+    {
+        na.NavigateTo("/User");
     }
 }
