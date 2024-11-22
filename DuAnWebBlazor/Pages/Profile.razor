@@ -1,0 +1,21 @@
+﻿ @page "/Profile";
+ @using Blazored.LocalStorage;
+ @inject ILocalStorageService localStorage
+ @inject HttpClient cli;
+ @using Newtonsoft.Json;
+<h3>Profile</h3>
+
+
+@code {
+    public async Task ThongTin()
+    {
+        var Accountname = localStorage.GetItemAsync<string>("NameAccount");
+        string URl = $@"https://localhost:7185/api/Loginn/Laythongtin?nameAccount={Accountname}";
+        var Request = await cli.GetAsync(URl);
+        if (Request.IsSuccessStatusCode)
+        {
+             var data = JsonConvert.DeserializeObject(Request)
+        }
+
+    }
+}

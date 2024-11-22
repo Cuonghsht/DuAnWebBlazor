@@ -1,7 +1,9 @@
 ﻿using DuAnWebData.Data;
 using DuAnWebData.Fake;
+using DuAnWebData.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DuAnWebAPI.Services
 {
@@ -14,12 +16,11 @@ namespace DuAnWebAPI.Services
         {
             _data = data;
         }
-        public string nameAcoount;
         [HttpGet("Login")]
-        public async IActionResult Login(string accountName, string passWord)
+        public async  Task< IActionResult> Login(string accountName, string passWord)
 
         {
-            var dangNhap = _data.Accountss.FirstOrDefault(x => x.AccountName == accountName);
+            var dangNhap =  await _data.Accountss.FirstOrDefaultAsync(x => x.AccountName == accountName);
             if (dangNhap == null)
             {
                 return BadRequest("Thông tin đăng nhập không hợp lệ ");
@@ -31,13 +32,12 @@ namespace DuAnWebAPI.Services
             else
             {
 
-                return Ok(dangNhap);
-                nameAcoount = dangNhap.AccountName;
+                return  Ok(dangNhap);
             }
         }
 
         [HttpGet("Laythongtin")]
-        public  IActionResult ThongTinCaNhan()
+        public   IActionResult ThongTinCaNhan(string nameAccount)
         {
             var thongTin = (from a in _data.Accountss
                             join b in _data.Users on a.AccountName equals b.AccountName
@@ -53,8 +53,16 @@ namespace DuAnWebAPI.Services
                                 NameUser = b.UserName,
 
                             }
-                            ).First(x => x.tenTk == nameAcoount);
-            return Ok(thongTin);
+                            ).FirstOrDefault(x => x.tenTk == nameAccount);
+            if(thongTin != null)
+            {
+                return Ok(thongTin);
+
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
     }

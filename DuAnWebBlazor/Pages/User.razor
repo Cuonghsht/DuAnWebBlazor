@@ -3,6 +3,8 @@
 @inject NavigationManager na ; 
 @using Newtonsoft.Json;
 @using DuAnWebData.Model;
+@using Blazored.LocalStorage 
+@inject ILocalStorageService localStorage
 
 <h3>User</h3>
 
@@ -79,7 +81,8 @@
 
     public async Task ThongtinCaNhan()
     {
-        
+        na.NavigateTo("/Profile");
+
     }
     public async Task GetAllProduct()
     {
