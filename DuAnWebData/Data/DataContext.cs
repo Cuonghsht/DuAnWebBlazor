@@ -32,7 +32,7 @@ namespace DuAnWebData.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-VJM0K6K\\SQLEXPRESS;Database=DuAnWed;User ID=sa; Password=123456;TrustServerCertificate=True;MultipleActiveResultSets=true;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-VJM0K6K\\SQLEXPRESS;Database=DuAnWed;User ID=sa; Password=123456;TrustServerCertificate=True;MultipleActiveResultSets=true;Connect Timeout=30;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

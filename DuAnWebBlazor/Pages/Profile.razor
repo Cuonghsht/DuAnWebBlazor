@@ -4,18 +4,61 @@
  @inject HttpClient cli;
  @using Newtonsoft.Json;
 <h3>Profile</h3>
-
+ 
 
 @code {
+
+    public class ThongTinResponse
+    {
+        public string TenTk { get; set; }
+        public string Email { get; set; }
+        public string SDT { get; set; }
+        public bool Sex { get; set; }
+        public string DiaChi { get; set; }
+        public Guid IdGioHang { get; set; }
+        public string NameUser { get; set; }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await ThongTin();
+    }
+    private ThongTinResponse tt;
     public async Task ThongTin()
     {
-        var Accountname = localStorage.GetItemAsync<string>("NameAccount");
-        string URl = $@"https://localhost:7185/api/Loginn/Laythongtin?nameAccount={Accountname}";
-        var Request = await cli.GetAsync(URl);
-        if (Request.IsSuccessStatusCode)
+        try
         {
-             var data = JsonConvert.DeserializeObject(Request)
-        }
+            var Accountname = await localStorage.GetItemAsync<string>("NameAccount");
+            if (string.IsNullOrEmpty(Accountname))
+            {
+                Console.WriteLine("NameAccount không tồn tại trong LocalStorage.");
+                return;
+            }
 
+            Console.WriteLine($"Accountname: {Accountname}");
+            string URl = $@"https://localhost:7185/api/Profile/Laythongtin?nameAccount={Accountname}";
+
+            var Request = await cli.GetStringAsync(URl);
+            var data = JsonConvert.DeserializeObject<ThongTinResponse>(Request);
+            tt = data;
+
+            Console.WriteLine($"Thông tin tài khoản: {JsonConvert.SerializeObject(tt)}");
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Lỗi HTTP: {ex.Message}");
+        }
+        catch (JsonException ex)
+        {
+            Console.WriteLine($"Lỗi phân tích JSON: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Lỗi không xác định: {ex.Message}");
+        }
+        finally
+        {
+            StateHasChanged();
+        }
     }
+
 }
