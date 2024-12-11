@@ -4,8 +4,22 @@
  @inject HttpClient cli;
  @using Newtonsoft.Json;
 <h3>Profile</h3>
- 
-
+<div class="profile-container">
+    <div class="profile-left">
+        <h2>Thông tin tài khoản</h2>
+        <p><strong>Tên tài khoản:</strong> @tt?.TenTk</p>
+        <p><strong>Email:</strong> @tt?.Email</p>
+        <p><strong>Số điện thoại:</strong> @tt?.SDT</p>
+        <p><strong>Giới tính:</strong> @(tt?.Sex == true ? "Nam" : "Nữ")</p>
+        <p><strong>Địa chỉ:</strong> @tt?.DiaChi</p>
+    </div>
+    <div class="profile-right">
+        <h2>Chào mừng đến trang cá nhân</h2>
+        <p>Cập nhật và quản lý thông tin cá nhân của bạn tại đây.</p>
+        <a href="/EditProfile" class="edit-link">Chỉnh sửa thông tin</a>
+    </div>
+</div>
+ <link href="css/ProfileCss.css" rel="stylesheet" />
 @code {
 
     public class ThongTinResponse

@@ -32,6 +32,7 @@
             <li>Khách Hàng</li>
             <li>Tổng Đài</li>
             <li>Sổ Quỹ</li>
+            <li @onclick="DangKiChuShop">Đăng kí trở thành chú shop</li>
             <li @onclick="ThongtinCaNhan" >Thông tin tài khoản </li>
             <li @onclick="DangXuat">Log out</li>
         </ul>
@@ -74,9 +75,14 @@
 @code {
     List<Product> listproduct = null;
 
+
     protected override async Task OnInitializedAsync()
     {
         await GetAllProduct();
+    }
+    public async Task DangKiChuShop()
+    {
+        na.NavigateTo("/Shops");
     }
 
     public async Task ThongtinCaNhan()

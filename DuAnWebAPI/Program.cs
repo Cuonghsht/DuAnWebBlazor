@@ -12,6 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<DuAnWebData.Model.Iemail, EmailService>();
@@ -21,7 +24,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", corsBuilder =>
     {
-        corsBuilder.WithOrigins("https://localhost:7124", "https://localhost:7185")  // bạn quên chưa thay url bảo sao
+        corsBuilder.WithOrigins("https://localhost:7124", "https://localhost:7185")  
                    .AllowAnyHeader()
                    .AllowAnyMethod();
     });

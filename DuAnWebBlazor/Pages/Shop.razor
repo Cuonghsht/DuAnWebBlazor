@@ -1,0 +1,22 @@
+﻿ @page "/Shops"
+ @using Blazored.LocalStorage;
+ @inject ILocalStorageService localStorage
+
+<h3>Shop</h3>
+
+@code {
+    string Mess;
+    protected override async Task OnInitializedAsync()
+    {
+        await CapNhat();
+    }
+    public async Task CapNhat()
+    {
+        var nameaccount = await localStorage.GetItemAsync<string>("NameAccount");
+        if (!string.IsNullOrEmpty(nameaccount))
+        {
+            Mess = "tài khoản này không tồn tại";
+        }
+        //string URL=
+    }
+}

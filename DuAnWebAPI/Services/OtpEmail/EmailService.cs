@@ -17,14 +17,14 @@ public class EmailService : DuAnWebData.Model.Iemail
 
     public async Task SendEmailAsync(string recipientEmail, string subject, string message)
     {
-        // Tạo email
+        
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderEmail));
         email.To.Add(new MailboxAddress("", recipientEmail));
         email.Subject = subject;
         email.Body = new TextPart(TextFormat.Html) { Text = message };
 
-        // Kết nối SMTP và gửi email
+        
         using var smtp = new SmtpClient();
         await smtp.ConnectAsync(_emailSettings.SMTPServer, _emailSettings.Port, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync(_emailSettings.Username, _emailSettings.Password);

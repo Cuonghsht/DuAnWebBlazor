@@ -1,4 +1,4 @@
-﻿namespace DuAnWebAPI.Services.OtpEmail
+﻿namespace DuAnWebBlazor.Pages
 {
     public interface Iemail
     {
