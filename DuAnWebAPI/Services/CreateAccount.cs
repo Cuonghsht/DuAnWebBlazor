@@ -26,7 +26,6 @@ namespace DuAnWebAPI.Services
             {
                 return BadRequest("Tên tài khoản này đã tồn tại");
             }
-           
              else{
                 try
                 {
@@ -38,7 +37,6 @@ namespace DuAnWebAPI.Services
                         RoleId = 2
                     };
                     dataContext.Accountss.Add(ac);
-
                     Guid iduser = Guid.NewGuid();
                     User user = new User()
                     {
@@ -52,7 +50,6 @@ namespace DuAnWebAPI.Services
                         DateTime = DateTime.Now
                     };
                     dataContext.Users.Add(user);
-
                     Cart car = new Cart()
                     {
                         IdCart = Guid.NewGuid(),
@@ -61,7 +58,6 @@ namespace DuAnWebAPI.Services
                         NgayCapNhat = DateTime.Now
                     };
                     dataContext.Carts.Add(car);
-
                     dataContext.SaveChanges();
                     return Ok("Thanh Cong");
                 }

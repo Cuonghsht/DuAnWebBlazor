@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -13,6 +14,7 @@ namespace DuAnWebData.Model
         public Guid IdBill { get; set; }
         public DateTime NgayThanhToan { get; set; }
         public Guid IdProduct { get; set; }
+        [Required(ErrorMessage ="Khong duoc de trong")]
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         [JsonIgnore]

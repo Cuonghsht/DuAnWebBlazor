@@ -1,4 +1,4 @@
-﻿namespace DuAnWebData.Model
+﻿namespace DuAnWebData.ConFig
 {
     public interface Iemail
     {

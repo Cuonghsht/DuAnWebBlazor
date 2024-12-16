@@ -11,6 +11,7 @@ namespace DuAnWebData.Model
     {
         public Guid ProductId { get; set; }
 
+        
         public string NameProduct { get; set; }
         public decimal PriceProduct { get; set; }
         public int Quantity { get; set; }
