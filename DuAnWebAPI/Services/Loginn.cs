@@ -1,4 +1,5 @@
-﻿using DuAnWebData.Data;
+﻿using DuAnWebAPI.Services.Login;
+using DuAnWebData.Data;
 using DuAnWebData.Fake;
 using DuAnWebData.Model;
 using Microsoft.AspNetCore.Http;
@@ -16,22 +17,23 @@ namespace DuAnWebAPI.Services
         {
             _data = data;
         }
-        [HttpGet("Login")]
-        public   IActionResult Login(string accountName, string passWord)
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody]LoginRequest res)
 
         {
-            var dangNhap = _data.Accountss.FirstOrDefault(x => x.AccountName== accountName);
+            var dangNhap = _data.Accountss.FirstOrDefault(x => x.AccountName == res.AccountName);
+            Console.WriteLine("hehe");
             if (dangNhap == null)
             {
-                return BadRequest("Thông tin đăng nhập không hợp lệ ");
+                return NotFound("Thông tin đăng nhập không hợp lệ ");
             }
-            else if (dangNhap.AccountPass != passWord)
+            else if (dangNhap.AccountPass != res.AccountPass)
             {
-                return BadRequest("Thông tin đăng nhập không hợp lệ ");
+                return NotFound("Thông tin đăng nhập không hợp lệ ");
             }
             else
             {
-                return  Ok(dangNhap);
+                return Ok(dangNhap);
             }
         }
     }

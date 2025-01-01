@@ -63,7 +63,7 @@ namespace DuAnWebAPI.Services
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest(ex);
+                    return NotFound(ex);
                 }
             }
            

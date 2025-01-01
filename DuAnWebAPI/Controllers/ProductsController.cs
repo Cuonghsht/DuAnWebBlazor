@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DuAnWebData.Data;
 using DuAnWebData.Model;
 using Newtonsoft.Json;
+using DuAnWebData.Migrations;
+using System.Drawing.Printing;
 
 namespace DuAnWebAPI.Controllers
 {
@@ -24,13 +26,23 @@ namespace DuAnWebAPI.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(int page = 1, int pagesize = 5)
         {
-            if (_context.Products == null)
-            {
-                return NotFound();
-            }
-            return await _context.Products.ToListAsync();
+            var Sumdata = _context.Products.Where(a => a.Quantity > 0).Count();
+            var data = _context.Products.Skip((page - 1) * pagesize)
+                .Take(pagesize)
+                .ToList();
+            return Ok
+                (new
+                    {
+                        TotalRecords = Sumdata,
+                        Page = page,
+                        PageSize = pagesize,
+                        TotalPages = (int)Math.Ceiling((double)Sumdata / pagesize),
+                        Product = data
+                    }
+                );
+
         }
 
         // GET: api/Products/5
@@ -82,9 +94,6 @@ namespace DuAnWebAPI.Controllers
             return NoContent();
         }
 
-
-
-
         //Code test
         [HttpPost("AddProduct")]
         public async Task<ActionResult<Product>> themtest(string ten, decimal gia, int sl, string mota, bool trangthai, string anh)
@@ -130,4 +139,3 @@ namespace DuAnWebAPI.Controllers
         }
     }
 }
-  

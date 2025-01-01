@@ -9,8 +9,8 @@ namespace DuAnWebData.Fake
 {
     public class CreateAccountUserCart
     {
-      public Accountfake  acc { get;set; }
-       public CartFake car { get; set; }
+      public Accounts  acc { get;set; }
+       public Cart car { get; set; }
         public User us { get; set; }
     }
 }

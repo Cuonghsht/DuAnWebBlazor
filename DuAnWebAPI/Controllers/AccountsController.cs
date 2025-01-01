@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DuAnWebData.Data;
 using DuAnWebData.Model;
 using DuAnWebData.Fake;
+using System.Drawing.Printing;
 
 namespace DuAnWebAPI.Controllers
 {
@@ -21,13 +22,24 @@ namespace DuAnWebAPI.Controllers
         {
             _context = context;
         }
-        
+
         // GET: api/Accounts
         [HttpGet]
-        public  IActionResult GetAccount()
+        public IActionResult GetAccount(int page = 1, int pagesize =10)
         {
-            var data =  _context.Accountss.ToList();
-            return Ok(data);
+            var Sumdata = _context.Accountss.Count();
+            var data = _context.Accountss.Skip((page-1)*pagesize)
+                .Take(pagesize)
+                .ToList();
+            return Ok(new
+            {
+                TotalRecords = Sumdata, 
+                Page = page,                 
+                PageSize = pagesize,         
+                TotalPages = (int)Math.Ceiling((double)Sumdata / pagesize), 
+                Accounts = data              
+            });
+
         }
 
         // GET: api/Accounts/5
@@ -47,8 +59,6 @@ namespace DuAnWebAPI.Controllers
 
             return accounts;
         }
-
-        // PUT: api/Accounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccounts(Guid id, Accounts accounts)
@@ -57,9 +67,7 @@ namespace DuAnWebAPI.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(accounts).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -78,7 +86,6 @@ namespace DuAnWebAPI.Controllers
 
             return NoContent();
         }
-
         // POST: api/Accounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -96,7 +103,7 @@ namespace DuAnWebAPI.Controllers
             return CreatedAtAction("GetAccounts", new { id = accounts.AccountId }, accounts);
         }
         [HttpPost("AddAccount")]
-        public async Task<ActionResult<Accounts>> Add([FromBody] Accountfake aa)
+        public async Task<ActionResult<Accounts>> Add([FromBody] Accounts aa)
         {
             Accounts accounts = new Accounts()
             {
@@ -108,8 +115,6 @@ namespace DuAnWebAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok("Thanh cong");
         }
-
-        // DELETE: api/Accounts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccounts(Guid id)
         {
@@ -122,13 +127,10 @@ namespace DuAnWebAPI.Controllers
             {
                 return NotFound();
             }
-
             _context.Accountss.Remove(accounts);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
-
         private bool AccountsExists(Guid id)
         {
             return (_context.Accountss?.Any(e => e.AccountId == id)).GetValueOrDefault();
