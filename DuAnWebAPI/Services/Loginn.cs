@@ -33,6 +33,8 @@ namespace DuAnWebAPI.Services
             }
             else
             {
+                HttpContext.Session.SetString("AccountId", dangNhap.AccountId.ToString());
+                HttpContext.Session.SetString("AcountName", dangNhap.AccountName.ToString());
                 return Ok(dangNhap);
             }
         }
