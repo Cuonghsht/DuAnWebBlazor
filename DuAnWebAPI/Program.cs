@@ -4,6 +4,8 @@ using DuAnWebData.Data;
 using DuAnWebData.Model;
 using Microsoft.EntityFrameworkCore;
 using DuAnWebAPI.Services.Res;
+using DuAnWebAPI.Services.Buy;
+using DuAnWebAPI.Services.Session;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<Iemail, EmailService>();
+builder.Services.AddScoped<SessionLogin, SessionService>();
+builder.Services.AddScoped<ICartcs, CartService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddCors(options =>

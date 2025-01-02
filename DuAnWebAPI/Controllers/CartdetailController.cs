@@ -15,8 +15,8 @@ namespace DuAnWebAPI.Controllers
         private readonly ICartcs _iCart;
         private readonly SessionLogin _Session;
         private readonly DataContext _data;
-        
-        public CartdetailController(ICartcs iCar,SessionLogin sss,DataContext data)
+
+        public CartdetailController(ICartcs iCar, SessionLogin sss, DataContext data)
         {
             _iCart = iCar;
             _Session = sss;
@@ -26,18 +26,29 @@ namespace DuAnWebAPI.Controllers
         [HttpGet("Getall")]
         public async Task<object> Get()
         {
-            var user =  _data.Users.FirstOrDefault(x=>x.AccountName==_Session.AccountName);
-            var IdCart = _data.Carts.FirstOrDefaultAsync(x=>x.IdUser==user.UserId);
+            if (_Session.AccountName == "")
+            {
+                return NotFound();
+            }
+            var user = await _data.Users.FirstOrDefaultAsync(x => x.AccountName == _Session.AccountName);
+            if (user == null)
+            {
+                return BadRequest("Nguoi dung khong ton tai");
+            }
+            var IdCart = await _data.Carts.FirstOrDefaultAsync(x => x.IdUser == user.UserId);
             if (IdCart == null)
             {
                 return NotFound();
             }
             else
             {
-                
-                return  _iCart.GetAllProduct(IdCart.Result.IdCart);
+
+                return Ok(
+                    IdCart
+                    );
+
             }
-            
+
         }
     }
 }

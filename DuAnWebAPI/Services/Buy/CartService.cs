@@ -55,7 +55,7 @@ namespace DuAnWebAPI.Services.Buy
             catch (Exception ex)
             {
                  Console.WriteLine(ex.Message);
-                throw new InvalidCastException("Phuonh thuc khong hoat dong");
+                throw new InvalidCastException("Phuong thuc khong hoat dong");
             }
 
         }
