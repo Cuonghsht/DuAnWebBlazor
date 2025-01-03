@@ -31,6 +31,10 @@ namespace DuAnWebAPI.Services.Session
                 return string.IsNullOrEmpty(accountIdStr) ? Guid.Empty : Guid.Parse(accountIdStr);
             
         }
+        public  void SetaccountName(string Name)
+        {
+              _contextAccessor.HttpContext.Session.SetString("AcountName", Name);
+        }
 
         public string GetAccountName()
         {

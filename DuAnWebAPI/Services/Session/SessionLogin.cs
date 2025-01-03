@@ -7,7 +7,7 @@
 
         string GetAccountName();
         Guid GetAccountId();
-        
+        void SetaccountName(string accountname);
 
     }
 
