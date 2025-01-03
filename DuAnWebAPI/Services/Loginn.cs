@@ -1,4 +1,5 @@
 ﻿using DuAnWebAPI.Services.Login;
+using DuAnWebAPI.Services.Session;
 using DuAnWebData.Data;
 using DuAnWebData.Fake;
 using DuAnWebData.Model;
@@ -13,9 +14,11 @@ namespace DuAnWebAPI.Services
     public class Loginn : ControllerBase
     {
         private readonly DataContext _data;
-        public Loginn(DataContext data)
+        private readonly SessionService _sessionService;
+        public Loginn(DataContext data, SessionService sessionService)
         {
             _data = data;
+            _sessionService = sessionService;
         }
         [HttpPost("Login")]
         public IActionResult Login([FromBody]LoginRequest res)
@@ -33,8 +36,11 @@ namespace DuAnWebAPI.Services
             }
             else
             {
-                HttpContext.Session.SetString("AccountId", dangNhap.AccountId.ToString());
-                HttpContext.Session.SetString("AcountName", dangNhap.AccountName.ToString());
+               
+                string nameAccount = HttpContext.Session.GetString("AcountName");
+                var userid = _data.Users.FirstOrDefault(x => x.AccountName == _sessionService.AccountName);
+                var cartid = _data.Carts.FirstOrDefault(x => x.IdUser == userid.UserId);
+                HttpContext.Session.SetString("IdCartSession", cartid.IdCart.ToString());
                 return Ok(dangNhap);
             }
         }

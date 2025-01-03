@@ -25,6 +25,14 @@ namespace DuAnWebAPI.Services.Buy
         {
             var Sum = _dataContext.CartDetails.Count();
             var data = await _dataContext.CartDetails.Skip((Page - 1) * PageSize).Take(PageSize).ToListAsync();
+            if (data ==null)
+            {
+                Console.WriteLine("Khong co du lieu cua gio hang");
+            }
+            else
+            {
+                Console.WriteLine("Data co du lieu");
+            }
             return new
             {
                 TotalRecords = Sum,

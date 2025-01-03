@@ -1,12 +1,16 @@
 ﻿
+using DuAnWebData.Data;
+
 namespace DuAnWebAPI.Services.Session
 {
     public class SessionService : SessionLogin
     {
         private readonly IHttpContextAccessor _contextAccessor;
-        public SessionService(IHttpContextAccessor httpContextAccessor)
+        private readonly DataContext _dataContext;
+        public SessionService(IHttpContextAccessor httpContextAccessor,DataContext data)
         {
             _contextAccessor = httpContextAccessor;
+            _dataContext = data;
         }
 
         public string AccountName { get => _contextAccessor.HttpContext.Session.GetString("AcountName"); set => _contextAccessor.HttpContext.Session.SetString("AcountName", value); }
@@ -32,5 +36,6 @@ namespace DuAnWebAPI.Services.Session
         {
             return _contextAccessor.HttpContext.Session.GetString("AcountName");
         }
+        
     }
 }

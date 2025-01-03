@@ -1,6 +1,7 @@
 ﻿using DuAnWebAPI.Services.Buy;
 using DuAnWebAPI.Services.Session;
 using DuAnWebData.Data;
+using DuAnWebData.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -15,6 +16,7 @@ namespace DuAnWebAPI.Controllers
         private readonly ICartcs _iCart;
         private readonly SessionLogin _Session;
         private readonly DataContext _data;
+       
 
         public CartdetailController(ICartcs iCar, SessionLogin sss, DataContext data)
         {
@@ -22,7 +24,8 @@ namespace DuAnWebAPI.Controllers
             _Session = sss;
             _data = data;
         }
-
+        private string IdCart;
+          
         [HttpGet("Getall")]
         public async Task<object> Get()
         {
@@ -42,13 +45,23 @@ namespace DuAnWebAPI.Controllers
             }
             else
             {
-
-                return Ok(
-                    IdCart
-                    );
-
+                return _iCart.GetAllProduct(IdCart.IdCart);
             }
 
+        }
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(CartDetail car)
+        {
+            if(car == null)
+            {
+                return BadRequest("Du lieu dang bi null");
+            }
+            else
+            {
+                
+                await _iCart.BuyProduc(car);
+                return Ok("Them thanh cong");
+            }
         }
     }
 }
