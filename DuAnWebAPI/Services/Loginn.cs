@@ -14,34 +14,28 @@ namespace DuAnWebAPI.Services
     public class Loginn : ControllerBase
     {
         private readonly DataContext _data;
-        private readonly SessionService _sessionService;
-        public Loginn(DataContext data, SessionService sessionService)
+        private readonly SessionLogin _session;
+        public Loginn(DataContext data, SessionLogin session)
         {
             _data = data;
-            _sessionService = sessionService;
+            _session = session;
         }
         [HttpPost("Login")]
-        public IActionResult Login([FromBody]LoginRequest res)
+        public async Task<IActionResult> Login([FromBody]LoginRequest res)
 
         {
-            var dangNhap = _data.Accountss.FirstOrDefault(x => x.AccountName == res.AccountName);
+            var dangNhap = await _data.Accountss.Where(x=>x.AccountName == res.AccountName && x.AccountPass == res.AccountPass).Select(x => new { x.AccountName,x.AccountId,x.RoleId }).FirstOrDefaultAsync();
             Console.WriteLine("hehe");
             if (dangNhap == null)
             {
                 return NotFound("Thông tin đăng nhập không hợp lệ ");
             }
-            else if (dangNhap.AccountPass != res.AccountPass)
-            {
-                return NotFound("Thông tin đăng nhập không hợp lệ ");
-            }
             else
             {
-               
-                string nameAccount = HttpContext.Session.GetString("AcountName");
-                var userid = _data.Users.FirstOrDefault(x => x.AccountName == _sessionService.AccountName);
-                var cartid = _data.Carts.FirstOrDefault(x => x.IdUser == userid.UserId);
-                HttpContext.Session.SetString("IdCartSession", cartid.IdCart.ToString());
-                return Ok(dangNhap);
+
+                _session.SetaccountName(dangNhap.AccountName);
+                _session.SetAccountId(dangNhap.AccountId);
+                return  Ok(dangNhap);
             }
         }
     }

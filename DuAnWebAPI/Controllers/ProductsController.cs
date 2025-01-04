@@ -25,7 +25,7 @@ namespace DuAnWebAPI.Controllers
         }
 
         // GET: api/Products
-        [HttpGet]
+        [HttpGet("getallpro")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts(int page = 1, int pagesize = 5)
         {
             var Sumdata = _context.Products.Where(a => a.Quantity > 0).Count();

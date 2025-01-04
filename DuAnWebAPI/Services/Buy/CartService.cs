@@ -2,6 +2,7 @@
 using DuAnWebData.Data;
 using DuAnWebData.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 using System.Drawing.Printing;
@@ -24,24 +25,9 @@ namespace DuAnWebAPI.Services.Buy
 
         public async Task<object> GetAllProduct(Guid Idcart, int Page = 1, int PageSize = 5)
         {
-            var Sum = _dataContext.CartDetails.Count();
-            var data = await _dataContext.CartDetails.Skip((Page - 1) * PageSize).Take(PageSize).ToListAsync();
-            if (data ==null)
-            {
-                Console.WriteLine("Khong co du lieu cua gio hang");
-            }
-            else
-            {
-                Console.WriteLine("Data co du lieu");
-            }
-            return new
-            {
-                TotalRecords = Sum,
-                Page = Page,
-                PageSize = PageSize,
-                TotalPages = (int)Math.Ceiling((double)Sum / PageSize),
-                Product = data
-            }; ;
+            var data = await _dataContext.CartDetails.FirstOrDefaultAsync(x => x.IdCart == Idcart);
+            return data == null ? null : data;
+            
         }
 
         public async Task RemoveProductByCart(Guid Idcartdetail)

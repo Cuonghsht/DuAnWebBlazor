@@ -29,11 +29,11 @@ namespace DuAnWebAPI.Controllers
         [HttpGet("Getall")]
         public async Task<object> Get()
         {
-            if (_Session.AccountName == "")
+            if (_Session.GetAccountName() == "")
             {
                 return NotFound();
             }
-            var user = await _data.Users.FirstOrDefaultAsync(x => x.AccountName == _Session.AccountName);
+            var user = await _data.Users.FirstOrDefaultAsync(x => x.AccountName == _Session.GetAccountName());
             if (user == null)
             {
                 return BadRequest("Nguoi dung khong ton tai");
@@ -58,17 +58,18 @@ namespace DuAnWebAPI.Controllers
             }
             else
             {
-                var user = await _data.Users.FirstOrDefaultAsync(x => x.AccountName = _Session.GetAccountName);
+                
+                var user = await _data.Users.FirstOrDefaultAsync(x => x.AccountName == _Session.GetAccountName());
                 if(user == null)
                 {
                     return BadRequest("He thong dang bi loi");
                 }
-                var idCart = await _data.Carts.FirstOrDefaultAsync(x=>x.IdUser=user.Id)
+                var idCart = await _data.Carts.FirstOrDefaultAsync(x => x.IdUser == user.UserId);
                  if (idCart == null)
                 {
                     return NotFound("Tai khoan cua ban dang co van de");
                 }
-
+                car.IdCart = idCart.IdCart;
                 await _iCart.BuyProduc(car);
                 return Ok("Them thanh cong");
             }
