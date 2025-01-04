@@ -58,7 +58,17 @@ namespace DuAnWebAPI.Controllers
             }
             else
             {
-                
+                var user = await _data.Users.FirstOrDefaultAsync(x => x.AccountName = _Session.GetAccountName);
+                if(user == null)
+                {
+                    return BadRequest("He thong dang bi loi");
+                }
+                var idCart = await _data.Carts.FirstOrDefaultAsync(x=>x.IdUser=user.Id)
+                 if (idCart == null)
+                {
+                    return NotFound("Tai khoan cua ban dang co van de");
+                }
+
                 await _iCart.BuyProduc(car);
                 return Ok("Them thanh cong");
             }

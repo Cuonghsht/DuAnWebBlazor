@@ -17,6 +17,7 @@ namespace DuAnWebAPI.Services.Buy
         }
         public async Task BuyProduc(CartDetail cardetail )
         {
+            
             _dataContext.CartDetails.Add(cardetail);
             await _dataContext.SaveChangesAsync();
         }
@@ -47,7 +48,6 @@ namespace DuAnWebAPI.Services.Buy
         {
             try
             {
-
                 var cartdatailremove = _dataContext.CartDetails.FindAsync(Idcartdetail);
                 if (cartdatailremove != null) 
                 {
@@ -58,7 +58,6 @@ namespace DuAnWebAPI.Services.Buy
                 {
                     throw new KeyNotFoundException("Khong tim thay doi tuong can xoa");
                 }
-                
             }
             catch (Exception ex)
             {
