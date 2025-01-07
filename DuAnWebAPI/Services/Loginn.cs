@@ -22,7 +22,6 @@ namespace DuAnWebAPI.Services
         }
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody]LoginRequest res)
-
         {
             var dangNhap = await _data.Accountss.Where(x=>x.AccountName == res.AccountName && x.AccountPass == res.AccountPass).Select(x => new { x.AccountName,x.AccountId,x.RoleId }).FirstOrDefaultAsync();
             Console.WriteLine("hehe");
@@ -32,7 +31,6 @@ namespace DuAnWebAPI.Services
             }
             else
             {
-
                 _session.SetaccountName(dangNhap.AccountName);
                 _session.SetAccountId(dangNhap.AccountId);
                 return  Ok(dangNhap);
