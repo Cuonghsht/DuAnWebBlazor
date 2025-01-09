@@ -8,5 +8,6 @@ namespace DuAnWebAPI.Services.ProductDL
         Task AddProduct(DuAnWebData.Model.Product pro, Guid idUser);
         Task DeleteProduct(Guid idProduct);
         Task UpadteProduct(DuAnWebData.Model.Product pro, Guid idProduct);
+        Task<DuAnWebData.Model.Product> DetailProduct(Guid idProduct);
     }
 }

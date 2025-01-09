@@ -25,16 +25,28 @@ namespace DuAnWebAPI.Services.Buy
 
         public async Task<object> GetAllProduct(Guid Idcart, int Page = 1, int PageSize = 5)
         {
-            var data = await _dataContext.CartDetails.FirstOrDefaultAsync(x => x.IdCart == Idcart);
-            return data == null ? null : data;
-            
+            var totalRecords = await _dataContext.CartDetails.CountAsync(x => x.IdCart == Idcart);
+            var data = await _dataContext.CartDetails
+                                         .Where(x => x.IdCart == Idcart)
+                                         .Skip((Page - 1) * PageSize)
+                                         .Take(PageSize)
+                                         .ToListAsync();
+
+            return new
+            {
+                TotalRecords = totalRecords,
+                Page = Page,
+                PageSize = PageSize,
+                TotalPages = (int)Math.Ceiling((double)totalRecords / PageSize),
+                Items = data
+            };
         }
 
         public async Task RemoveProductByCart(Guid Idcartdetail)
         {
             try
             {
-                var cartdatailremove = _dataContext.CartDetails.FindAsync(Idcartdetail);
+                var cartdatailremove = await _dataContext.CartDetails.FindAsync(Idcartdetail);
                 if (cartdatailremove != null) 
                 {
                     _dataContext.Remove(cartdatailremove);
@@ -53,9 +65,24 @@ namespace DuAnWebAPI.Services.Buy
 
         }
 
-        public Task UpdateProducByCart(Guid Idcartdetail)
+        public async Task UpdateProducByCart(int  Idcartdetail, CartDetail car)
         {
-            throw new NotImplementedException();
+            
+            
+            
+                var data = _dataContext.CartDetails.FindAsync(Idcartdetail);
+                if(data == null)
+                {
+                    throw new ArgumentNullException("Du lieu khoong duoc tim thay");
+                }
+                else
+                {
+                    data.Result.Quantity = car.Quantity;
+                    data.Result.NgayThemVao = car.NgayThemVao;
+                    data.Result.Total = car.Total;
+                    await _dataContext.SaveChangesAsync();
+                }
+                
         }
     }
 }
